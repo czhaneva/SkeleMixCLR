@@ -1,5 +1,5 @@
-work_dir: work_dir/Debug/singlegpu/1gpu_bz128_pergpu/seed2/Base/spatial_shear_tem_padding/queue_32768/Tem_0.2/with_MLP/skeclr_multi_swap/semantic_swap/64_1_48_1_32_1_16_1/st_gcn/agcn_graph/ntu/joint/LE_0_xview_frame64_channel16_feature128_hidden256_epoch300_model5
-weights:  work_dir/Debug/singlegpu/1gpu_bz128_pergpu/seed2/Base/spatial_shear_tem_padding/queue_32768/Tem_0.2/with_MLP/skeclr_multi_swap/semantic_swap/64_1_48_1_32_1_16_1/st_gcn/agcn_graph/ntu/joint/0_xview_frame64_channel16_feature128_hidden256_epoch300/epoch5_model.pt
+work_dir: work_dir/Debug/singlegpu/1gpu_bz128_pergpu/seed2/Base/spatial_shear_tem_padding/queue_32768/Tem_0.2/with_MLP/skeclr_multi_swap/semantic_swap/64_1_48_1_32_1_16_1/st_gcn/agcn_graph/ntu/joint/LE_0_xview_frame64_channel16_feature128_hidden256_epoch300_model300
+weights:  work_dir/Debug/singlegpu/1gpu_bz128_pergpu/seed2/Base/spatial_shear_tem_padding/queue_32768/Tem_0.2/with_MLP/skeclr_multi_swap/semantic_swap/64_1_48_1_32_1_16_1/st_gcn/agcn_graph/ntu/joint/0_xview_frame64_channel16_feature128_hidden256_epoch300/epoch300_model.pt
 
 ignore_weights: [encoder_q.fc, encoder_q_motion.fc, encoder_q_bone.fc, encoder_k, encoder_k_motion, encoder_k_bone, queue, queue_motion, queue_bone, encoder_q.global_head, encoder_q.local_head, encoder_q.Ap, encoder_q.global_mlps, encoder_q.tem_local_mlps, encoder_q.spa_local_mlps]
 
