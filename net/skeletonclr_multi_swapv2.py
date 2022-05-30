@@ -25,8 +25,8 @@ class SkeletonCLR(nn.Module):
 
     def __init__(self, base_encoder=None, pretrain=True, feature_dim=128, queue_size=32768,
                  momentum=0.999, Temperature=0.07, mlp=True, in_channels=3, hidden_channels=64,
-                 hidden_dim=256, num_class=60, dropout=0.5, sigma=0.5, spa_l=[2,], spa_u=[3,], tem_l=[7,], tem_u=[11,],
-                 repeat=[1,], swap_mode='swap', spatial_mode='semantic',
+                 hidden_dim=256, num_class=60, dropout=0.5, sigma=0.5,
+                 swap_cfg={'swap_params': [[2,3,7,11,1],], 'swap_mode': 'swap', 'spatial_mode': 'semantic'},
                  graph_args={'layout': 'ntu-rgb+d', 'strategy': 'spatial'}, edge_importance_weighting=True, **kwargs):
         """
         K: queue size; number of negative keys (default: 32768)
@@ -50,14 +50,9 @@ class SkeletonCLR(nn.Module):
             self.T = Temperature
             self.sigma = sigma
 
-            assert len(spa_l) == len(spa_u) == len(tem_l) == len(tem_u) == len(repeat)
-            self.spa_l = spa_l
-            self.spa_u = spa_u
-            self.tem_l = tem_l
-            self.tem_u = tem_u
-            self.repeat = repeat
-            self.swap_mode = swap_mode
-            self.spatial_mode = spatial_mode
+            self.swap_params = swap_cfg['swap_params']
+            self.swap_mode = swap_cfg['swap_mode']
+            self.spatial_mode = swap_cfg['spatial_mode']
 
             self.encoder_q = base_encoder(in_channels=in_channels, hidden_channels=hidden_channels,
                                           hidden_dim=hidden_dim, num_class=feature_dim,
@@ -179,15 +174,18 @@ class SkeletonCLR(nn.Module):
         if not self.pretrain:
             return self.encoder_q(im_q_list[0])
 
-        assert len(im_q_list) == len(self.spa_l)
+        assert len(im_q_list) == len(self.swap_params)
 
-        randidx_list, im_pc_list, mask_list = [], [], []
-        for i, im_q in enumerate(im_q_list):
-            for _ in range(self.repeat[i]):
-                randidx, im_pc, mask = self.ske_swap(im_q, self.spa_l[i], self.spa_u[i], self.tem_l[i], self.tem_u[i])
+        randidx_list, im_pc_list, mask_list, loss_ins_weight_list, loss_reg_weight_list = [], [], [], [], []
+        for i, (im_q, swap_param) in enumerate(zip(im_q_list, self.swap_params)):
+            spa_l, spa_u, tem_l, tem_u, repeat, weight = swap_param
+            loss_ins_weight_list.append(weight)
+            for _ in range(repeat):
+                randidx, im_pc, mask = self.ske_swap(im_q, spa_l, spa_u, tem_l, tem_u)
                 randidx_list.append(randidx)
                 im_pc_list.append(im_pc)
                 mask_list.append(mask)
+                loss_reg_weight_list.append(weight)
 
         # compute query features
         q_list = []
@@ -262,7 +260,7 @@ class SkeletonCLR(nn.Module):
         # dequeue and enqueue
         self._dequeue_and_enqueue(k, label)
 
-        return logits_list, pos_mask.detach(), \
+        return logits_list, pos_mask.detach(), loss_ins_weight_list, \
                logits_reg_p_list, pos_mask_reg_p.detach(), \
-               logits_reg_c_list, pos_mask_reg_c.detach(), \
+               logits_reg_c_list, pos_mask_reg_c.detach(), loss_reg_weight_list, \
                # topk_onehot.detach(), target_mask.detach()

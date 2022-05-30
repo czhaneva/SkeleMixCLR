@@ -85,10 +85,12 @@ class SkeletonCLR_Processor(PT_Processor):
 
             # forward
             if epoch <= self.arg.mining_epoch:
-                output_list, pos_mask, output_p_list, pos_mask_p, output_c_list, pos_mask_c \
+                output_list, pos_mask, loss_ins_weight_list, \
+                output_p_list, pos_mask_p, output_c_list, pos_mask_c, loss_reg_weight_list, \
                     = self.model(query_list, key, None, topk=0, weight=self.arg.weight)
             else:
-                output_list, pos_mask, output_p_list, pos_mask_p, output_c_list, pos_mask_c \
+                output_list, pos_mask, loss_ins_weight_list, \
+                output_p_list, pos_mask_p, output_c_list, pos_mask_c, loss_reg_weight_list, \
                     = self.model(query_list, key, None, topk=self.arg.topk, weight=self.arg.weight)
 
             if hasattr(self.model, 'module'):
@@ -99,11 +101,18 @@ class SkeletonCLR_Processor(PT_Processor):
             if self.arg.loss == 'ce' or self.arg.loss == 'mnce':
                 loss_ins = 0
                 loss_reg = 0
-                for output in output_list:
-                    loss_ins += self.multi_nce_loss(output, pos_mask)
-                for output_p, output_c in zip(output_p_list, output_c_list):
-                    loss_reg += 0.5 * self.multi_nce_loss(output_p, pos_mask_p) + \
-                                0.5 * self.multi_nce_loss(output_c, pos_mask_c)
+                assert len(loss_ins_weight_list) == len(output_list), \
+                    'length of weigths {} should equal to length of output {}'.format(len(loss_ins_weight_list),
+                                                                                      len(output_list))
+                for ins_weight, output in zip(loss_ins_weight_list, output_list):
+                    loss_ins += ins_weight * self.multi_nce_loss(output, pos_mask)
+
+                assert len(loss_reg_weight_list) == len(output_p_list) == len(output_c_list), \
+                    'length of weights {} should equal to length of output {}'.format(len(loss_reg_weight_list),
+                                                                                      len(output_p_list))
+                for reg_weight, output_p, output_c in zip(loss_reg_weight_list, output_p_list, output_c_list):
+                    loss_reg += reg_weight * (0.5 * self.multi_nce_loss(output_p, pos_mask_p) + \
+                                              0.5 * self.multi_nce_loss(output_c, pos_mask_c))
                 loss = loss_ins + loss_reg
             else:
                 raise ValueError

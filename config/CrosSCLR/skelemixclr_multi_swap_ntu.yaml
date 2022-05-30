@@ -1,11 +1,11 @@
-work_dir: work_dir/Debug/singlegpu/1gpu_bz128_pergpu/seed2/Base/spatial_shear_tem_padding/queue_32768/Tem_0.2/with_MLP/skeclr_multi_swap/semantic_swap/64_1_48_1_32_1_16_1/st_gcn/agcn_graph/ntu/joint/0_xview_frame64_channel16_feature128_hidden256_epoch300
+work_dir: work_dir/singlegpu/1gpu_bz128_pergpu/seed2/Base/spatial_shear_tem_padding/queue_32768/Tem_0.2/with_MLP/skeclr_multi_swap/semantic_swap/64_3_1/st_gcn/agcn_graph/ntu/joint/0_xview_frame64_channel16_feature128_hidden256_epoch300
 # <work_dir> / <seed> / <data> / <aug> / <queue> / <Tem> / <MLP> / <arch> / <Param> / <Backbone> / <Graph> / <dataset> / <detail_training>
 
 # feeder
 train_feeder: feeder.ntu_feeder.Feeder_multi
 train_feeder_args:
   data_path: data/Base/NTU60_frame64/xview/train_position.npy
-  frames: [64, 48, 32, 16]
+  frames: [64, ]
   label_path: data/Base/NTU-RGB-D/xview/train_label.pkl 
   shear_amplitude: 0.5
   temperal_padding_ratio: 6
@@ -46,13 +46,12 @@ model_args:
   hidden_dim: 256
   num_class: 60
   dropout: 0.5
-  spa_l: [2, 2, 2, 2]
-  spa_u: [3, 3, 3, 3]
-  tem_l: [7, 5, 3, 1]
-  tem_u: [11, 9, 6, 3]
-  repeat: [1, 1, 1, 1]
-  swap_mode: 'swap'
-  spatial_mode: 'semantic'
+  # spa_l, spa_u, tem_l, tem_u, repeat, loss_weight
+  swap_cfg:
+    swap_params: [[2, 3, 7, 11, 3, 1.],
+                  ]
+    swap_mode: 'swap'
+    spatial_mode: 'semantic'
   graph_args:
     layout: 'ntu-rgb+d'
     strategy: 'spatial'
@@ -66,8 +65,8 @@ optimizer: SGD
 step: [300]
 
 # training
-device: [3]
-batch_size: 64
+device: [0]
+batch_size: 128
 test_batch_size: 128
 num_epoch: 300
 mining_epoch: 300
