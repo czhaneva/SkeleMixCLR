@@ -1,10 +1,10 @@
-work_dir: work_dir/Debug/singlegpu/1gpu_bz128_pergpu/seed2/Base/spatial_shear_tem_padding/queue_32768/Tem_0.2/with_MLP/skeclr_multi_swap/semantic_swap/64_1_48_1_32_1_16_1/st_gcn/agcn_graph/ntu/joint/FT_0_xview_frame64_channel16_feature128_hidden256_epoch300
-weights:  work_dir/Debug/singlegpu/1gpu_bz128_pergpu/seed2/Base/spatial_shear_tem_padding/queue_32768/Tem_0.2/with_MLP/skeclr_multi_swap/semantic_swap/64_1_48_1_32_1_16_1/st_gcn/agcn_graph/ntu/joint/0_xview_frame64_channel16_feature128_hidden256_epoch300/epoch300_model.pt
+work_dir: /data/ChenZhan/CrosSCLR/work_dir/singlegpu_3090/1gpu_bz128_pergpu/seed2/Base/spatial_shear_tem_padding/queue_32768/Tem_0.2/with_MLP/skeclr_multi_swap/semantic_swap/64_3_1/st_gcn/agcn_graph/ntu/joint/SEMI_0.01_0_xview_frame64_channel16_feature128_hidden256_epoch300_model300
+weights:  /data/ChenZhan/CrosSCLR/work_dir/singlegpu_3090/1gpu_bz128_pergpu/seed2/Base/spatial_shear_tem_padding/queue_32768/Tem_0.2/with_MLP/skeclr_multi_swap/semantic_swap/64_3_1/st_gcn/agcn_graph/ntu/joint/0_xview_frame64_channel16_feature128_hidden256_epoch300/epoch300_model.pt
 
 ignore_weights: [encoder_q.fc, encoder_k, queue]
 
 # feeder
-train_feeder: feeder.ntu_feeder.Feeder_single
+train_feeder: feeder.ntu_feeder.Feeder_semi
 train_feeder_args:
   data_path: data/Base/NTU60_frame64/xview/train_position.npy
   label_path: data/Base/NTU-RGB-D/xview/train_label.pkl 
@@ -13,6 +13,7 @@ train_feeder_args:
   window_size: 64
   center: True
   mmap: True
+  label_percent: 0.01
   
 test_feeder: feeder.ntu_feeder.Feeder_single
 test_feeder_args:
@@ -47,15 +48,15 @@ model_args:
   edge_importance_weighting: True
 
 # optim
-nesterov: True
-weight_decay: 0.0001
-base_lr: 0.1
+nesterov: False
+weight_decay: 0
+base_lr: 0.05
 optimizer: SGD
-step: [50, 70, 90]
-warm_up_epoch: 10
+step: [40]
+warm_up_epoch: 0
 
 # training
-device: [0]
+device: [3]
 batch_size: 128
 test_batch_size: 128
 num_epoch: 150
