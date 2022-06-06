@@ -107,6 +107,8 @@ class FT_Processor(Processor):
 
             # backward
             self.optimizer.zero_grad()
+            if self.arg.clip_norm:
+                nn.utils.clip_grad_norm_(self.model.parameters(), self.arg.max_grad, norm_type=2)
             loss.backward()
             self.optimizer.step()
 
@@ -205,5 +207,7 @@ class FT_Processor(Processor):
         parser.add_argument('--view', type=str, default='joint', help='the view of input')
         parser.add_argument('--warm_up_epoch', type=int, default=0, help='warm up epochs')
 
+        parser.add_argument('--clip_norm', type=str2bool, default=True, help='use clip_norm or not')
+        parser.add_argument('--max_grad', type=float, default=35., help='max number of grad')
 
         return parser

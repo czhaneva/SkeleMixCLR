@@ -351,7 +351,7 @@ class Processor(IO):
                             
         parser.add_argument('--knn_k', type=int, default=[], nargs='+', help='KNN-K')
         parser.add_argument('--knn_classes', type=int, default=60, help='use cosine lr schedule')
-        parser.add_argument('--knn_t', type=int, default=0.1, help='use cosine lr schedule')
+        parser.add_argument('--knn_t', type=float, default=0.1, help='use cosine lr schedule')
         parser.add_argument('--KNN_show', type=int, default=[], nargs='+',
                             help='the epoch to show the best KNN result')
         # endregion yapf: enable
