@@ -133,3 +133,6 @@ work_dir*
 
 # data
 data/
+
+# zip
+src.zip
