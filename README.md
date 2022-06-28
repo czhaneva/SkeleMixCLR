@@ -91,7 +91,7 @@ The **Top-1 accuracy** results on two datasets for the linear evaluation of our 
 Please cite our paper if you find this repository useful in your resesarch:
 
 ```
-@inproceedings{li2021crossclr,
+@inproceedings{chen2022skelemixclr,
   Title          = {Contrastive Learning from Spatio-Temporal Mixed Skeleton Sequences for Self-Supervised Skeleton-Based Action Recognition},
   Author         = {Zhan, Chen and Hong, Liu and Tianyu, Guo and Zhengyan, Chen and Pinhao, Song and Hao, Tang},
   Booktitle      = {arXiv},
