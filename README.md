@@ -1,9 +1,9 @@
-# CrosSCLR
+# SkeleMixCLR
 
 The Official PyTorch implementation of **"Contrastive Learning from Spatio-Temporal Mixed Skeleton Sequences for Self-Supervised Skeleton-Based Action Recognition"**. The arXiv version of our paper is coming soon.
 
 <div align=center>
-    <img src="resource/figures/motivation.png", width="600" >
+    <img src="resource/figures/pipline.jpg", width="600" >
 </div>
 
 ## Requirements
@@ -23,8 +23,8 @@ We only test our code on the following environment:
 ## Installation
   ```bash
   # Install python environment
-  $ conda create -n crossclr python=3.8.2
-  $ conda activate crossclr
+  $ conda create -n skelemixclr python=3.8.2
+  $ conda activate skelemixclr
 
   # Install PyTorch
   $ pip install torch==1.4.0
