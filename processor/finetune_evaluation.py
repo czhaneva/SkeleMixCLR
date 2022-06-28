@@ -96,6 +96,9 @@ class FT_Processor(Processor):
         for data, label in loader:
             self.global_step += 1
             # get data
+            if torch.isnan(data).any() or torch.isinf(data).any():
+                print(label)
+                exit()
             data = data.float().to(self.dev, non_blocking=True)
             label = label.long().to(self.dev, non_blocking=True)
 

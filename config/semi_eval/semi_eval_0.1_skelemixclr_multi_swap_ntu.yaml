@@ -1,13 +1,13 @@
-work_dir: /data/ChenZhan/CrosSCLR/work_dir/singlegpu_3090/1gpu_bz128_pergpu/seed2/Base/spatial_shear_tem_padding/queue_32768/Tem_0.2/with_MLP/skeclr_multi_swap/semantic_swap/64_3_1/st_gcn/agcn_graph/ntu/joint/SEMI_0.1_0_xview_frame64_channel16_feature128_hidden256_epoch300_model300
-weights:  /data/ChenZhan/CrosSCLR/work_dir/singlegpu_3090/1gpu_bz128_pergpu/seed2/Base/spatial_shear_tem_padding/queue_32768/Tem_0.2/with_MLP/skeclr_multi_swap/semantic_swap/64_3_1/st_gcn/agcn_graph/ntu/joint/0_xview_frame64_channel16_feature128_hidden256_epoch300/epoch300_model.pt
+work_dir: /data/ChenZhan/CrosSCLR/work_dir/singlegpu_3090/1gpu_bz128_pergpu/seed2/Base/spatial_shear_tem_padding/queue_32768/Tem_0.2/with_MLP/skeclr_multi_swap/semantic_swap/64_3_1/st_gcn/agcn_graph/ntu/joint/grad_clip_5/SEMI_0.1_0_xsub_frame64_channel16_feature128_hidden256_epoch300_model300
+weights:  /data/ChenZhan/CrosSCLR/work_dir/singlegpu_3090/1gpu_bz128_pergpu/seed2/Base/spatial_shear_tem_padding/queue_32768/Tem_0.2/with_MLP/skeclr_multi_swap/semantic_swap/64_3_1/st_gcn/agcn_graph/ntu/joint/0_xsub_frame64_channel16_feature128_hidden256_epoch300/epoch300_model.pt
 
 ignore_weights: [encoder_q.fc, encoder_k, queue]
 
 # feeder
 train_feeder: feeder.ntu_feeder.Feeder_semi
 train_feeder_args:
-  data_path: data/Base/NTU60_frame64/xview/train_position.npy
-  label_path: data/Base/NTU-RGB-D/xview/train_label.pkl 
+  data_path: data/Base/NTU60_frame64/xsub/train_position.npy
+  label_path: data/Base/NTU-RGB-D/xsub/train_label.pkl 
   shear_amplitude: -1
   temperal_padding_ratio: -1
   window_size: 64
@@ -17,8 +17,8 @@ train_feeder_args:
   
 test_feeder: feeder.ntu_feeder.Feeder_single
 test_feeder_args:
-  data_path: data/Base/NTU60_frame64/xview/val_position.npy
-  label_path: data/Base/NTU-RGB-D/xview/val_label.pkl 
+  data_path: data/Base/NTU60_frame64/xsub/val_position.npy
+  label_path: data/Base/NTU-RGB-D/xsub/val_label.pkl 
   shear_amplitude: -1
   temperal_padding_ratio: -1
   window_size: 64
@@ -50,17 +50,20 @@ model_args:
 # optim
 nesterov: False
 weight_decay: 1e-4
-base_lr: 0.05
+base_lr: 0.1
 optimizer: SGD
 step: [80]
 warm_up_epoch: 0
 
 # training
-device: [0]
+device: [1]
 batch_size: 128
 test_batch_size: 128
 num_epoch: 150
 view: 'joint'
+
+clip_norm: True
+max_grad: 5.
 
 # log
 save_interval: -1

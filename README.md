@@ -1,6 +1,6 @@
 # CrosSCLR
 
-The Official PyTorch implementation of **"3D Human Action Representation Learning via Cross-View Consistency Pursuit"** in CVPR 2021. The arXiv version of our paper is coming soon.
+The Official PyTorch implementation of **"Contrastive Learning from Spatio-Temporal Mixed Skeleton Sequences for Self-Supervised Skeleton-Based Action Recognition"**. The arXiv version of our paper is coming soon.
 
 <div align=center>
     <img src="resource/figures/motivation.png", width="600" >
@@ -8,10 +8,18 @@ The Official PyTorch implementation of **"3D Human Action Representation Learnin
 
 ## Requirements
 We only test our code on the following environment:
+  - SkeleMixCLR
   - Python == 3.8.2
   - PyTorch == 1.4.0
   - CUDA == 11.1
-
+  - GPU == GeForce RTX 2080 Ti
+  
+  - SkeleMixCLR+
+  - Python == 3.8.2
+  - PyTorch == 1.9.0
+  - CUDA == 11.1
+  - GPU == GeForce RTX 3090
+  
 ## Installation
   ```bash
   # Install python environment
@@ -20,10 +28,12 @@ We only test our code on the following environment:
 
   # Install PyTorch
   $ pip install torch==1.4.0
+  # or
+  $ pip install torch==1.9.0
 
   # Download our code
-  $ git clone https://github.com/LinguoLi/CrosSCLR.git
-  $ cd CrosSCLR
+  $ git clone https://github.com/czhaneva/SkeleMixCLR.git
+  $ cd SkeleMixCLR
 
   # Install torchlight
   $ cd torchlight
@@ -44,27 +54,25 @@ We only test our code on the following environment:
   # generate raw database for NTU-RGB+D
   $ python tools/ntu_gendata.py --data_path <path to nturgbd+d_skeletons>
 
-  # preprocess the above data for our method (for limited computing power, we resize the data to 50 frames)
+  # preprocess the above data for our method (for limited computing power, we resize the data to 64 frames)
   $ python feeder/preprocess_ntu.py
   ```
 
 ## Unsupervised Pre-Training
 
-- Example for unsupervised pre-training of **3s-CrosSCLR**. You can train other models by using other `.yaml` files in `config/` folder.
+- Example for unsupervised pre-training of **SkeleMixCLR+**. You can train other models by using other `.yaml` files in `config/` folder.
   ```bash
   # train on NTU-RGB+D xview
-  $ python main.py pretrain_crossclr_3views --config config/CrosSCLR/crossclr_3views_xview.yaml
+  $ python main.py pretrain_skeletonclr_multi_swapv2 --config config/CrosSCLR/skelemixclr_multi_swap_ntu.yaml.yaml
   ```
 - The pre-trained models are in the directory: `weights/`
 
 ## Linear Evaluation
 
-- Example for linear evaluation of **3s-CrosSCLR**. You can evaluate other models by using other `.yaml` files in `config/linear_eval` folder.
+- Example for linear evaluation of **SkeleMixCLR+**. You can evaluate other models by using other `.yaml` files in `config/linear_eval` folder.
   ```bash
   # evaluate pre-trained model on NTU-RGB+D xview
-  $ python main.py linear_evaluation --config config/linear_eval/linear_eval_crossclr_3views_xview.yaml --weights <path to weights>
-  # evaluate the provided pre-trained model
-  $ python main.py linear_evaluation --config config/linear_eval/linear_eval_crossclr_3views_xview.yaml --weights weights/crossclr_3views_xview_frame50_channel16_cross150_epoch300.pt
+  $ python main.py linear_evaluation --config config/linear_eval/linear_eval_skelemixclr_multi_swap_ntu.yaml --weights <path to weights>
   ```
   
  ## Results
@@ -73,17 +81,9 @@ The **Top-1 accuracy** results on two datasets for the linear evaluation of our 
 
 | Model          | NTU 60 xsub (%) | NTU 60 xview (%) | NTU 120 xsub (%) | NTU 120 xset (%) |
 | :------------- | :-------------: | :--------------: | :--------------: | :--------------: |
-| SkeletonCLR    |       68.3      |       76.4       |         -        |        -         |
-| 2s-CrosSCLR    |       74.5      |       82.1       |         -        |        -         |
-| 3s-CrosSCLR    |       77.8      |       83.4       |        67.9      |       66.7       |
-
-## Visualization
-
-The [**t-SNE**](https://www.jmlr.org/papers/volume9/vandermaaten08a/vandermaaten08a.pdf) visualization of the embeddings during SkeletonCLR and CrosSCLR pre-training.
-
-<div align=center>
-    <img src="resource/figures/tsne.gif", width="800" >
-</div>
+| SkeletonCLR    |       68.3      |       76.4       |       56.8       |       55.9       |
+| SkeleMixCLR    |       79.6      |       84.4       |       67.4       |       69.6       |
+| SkeleMixCLR+   |       80.7      |       85.5       |       69.0       |       68.2       |
 
 ---
 
@@ -92,15 +92,13 @@ Please cite our paper if you find this repository useful in your resesarch:
 
 ```
 @inproceedings{li2021crossclr,
-  Title          = {3D Human Action Representation Learning via Cross-View Consistency Pursuit},
-  Author         = {Linguo, Li and Minsi, Wang and Bingbing, Ni and Hang, Wang and Jiancheng, Yang and Wenjun, Zhang},
-  Booktitle      = {CVPR},
-  Year           = {2021}
+  Title          = {Contrastive Learning from Spatio-Temporal Mixed Skeleton Sequences for Self-Supervised Skeleton-Based Action Recognition},
+  Author         = {Zhan, Chen and Hong, Liu and Tianyu, Guo and Zhengyan, Chen and Pinhao, Song and Hao, Tang},
+  Booktitle      = {arXiv},
+  Year           = {2022}
 }
 ```
 
 ## Acknowledgement
-- The framework of our code is based on the old version of [ST-GCN](https://github.com/yysijie/st-gcn/blob/master/OLD_README.md) (Its new version is [MMSkeleton](https://github.com/open-mmlab/mmskeleton)).
-- [Awesome-Skeleton-based-Action-Recognition](https://github.com/niais/Awesome-Skeleton-based-Action-Recognition)
-- [mv-ignet](https://github.com/niais/mv-ignet)
-- [NTURGB-D](https://github.com/shahroudy/NTURGB-D)
+- The framework of our code is based on - [CrosSCLR](https://github.com/LinguoLi/CrosSCLR).
+
