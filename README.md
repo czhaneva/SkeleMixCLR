@@ -81,7 +81,7 @@ The **Top-1 accuracy** results on two datasets for the linear evaluation of our 
 
 | Model          | NTU 60 xsub (%) | NTU 60 xview (%) | NTU 120 xsub (%) | NTU 120 xset (%) |
 | :------------- | :-------------: | :--------------: | :--------------: | :--------------: |
-| SkeletonCLR    |       68.3      |       76.4       |       56.8       |       55.9       |
+| SkeletonCLR    |       68.3 | [weight](https://pan.baidu.com/s/1ecWGwlUrew0NaEAOuhEyTg)      |       76.4       |       56.8       |       55.9       |
 | SkeleMixCLR    |       79.6      |       84.4       |       67.4       |       69.6       |
 | SkeleMixCLR+   |       80.7      |       85.5       |       69.0       |       68.2       |
 
