@@ -77,13 +77,14 @@ We only test our code on the following environment:
   
  ## Results
 
-The **Top-1 accuracy** results on two datasets for the linear evaluation of our methods are shown here:
+The **Top-1 accuracy** results on two datasets for the linear evaluation of our methods with joint stream are shown here.
+The extraction code for the weight is 2022.
 
 | Model          | NTU 60 xsub (%) | NTU 60 xview (%) | NTU 120 xsub (%) | NTU 120 xset (%) |
 | :------------- | :-------------: | :--------------: | :--------------: | :--------------: |
 | SkeletonCLR    |       68.3      |       76.4       |       56.8       |       55.9       |
 | SkeleMixCLR    |       79.6      |       84.4       |       67.4       |       69.6       |
-| SkeleMixCLR+   |       80.7  [weight](https://pan.baidu.com/s/1ecWGwlUrew0NaEAOuhEyTg)    |       85.5       |       69.0       |       68.2       |
+| SkeleMixCLR+   |       80.7  [weight](https://pan.baidu.com/s/1ecWGwlUrew0NaEAOuhEyTg)    |       85.5 [weight](https://pan.baidu.com/s/1-Jaqrd2LGOpU8KEVRR0Eig) |       69.0 [weight](https://pan.baidu.com/s/1n2fQXOmUD8EfkyMsscjWqA)      |       68.2  [weight](https://pan.baidu.com/s/1eSLmcLiv9ZNfjF4kCkiLFQ)     |
 
 ---
 
