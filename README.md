@@ -1,6 +1,6 @@
 # SkeleMixCLR
 
-The Official PyTorch implementation of **"Contrastive Learning from Spatio-Temporal Mixed Skeleton Sequences for Self-Supervised Skeleton-Based Action Recognition"**. The arXiv version of our paper is coming soon.
+The Official PyTorch implementation of **"Contrastive Learning from Spatio-Temporal Mixed Skeleton Sequences for Self-Supervised Skeleton-Based Action Recognition"**. [arXiv](https://arxiv.org/abs/2207.03065)
 
 <div align=center>
     <img src="resource/figures/pipline.jpg", width="600" >
